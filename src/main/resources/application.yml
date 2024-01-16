@@ -14,7 +14,7 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
-    password: 123456
+    password:
     jedis:
       pool:
         max-active: 8
@@ -27,6 +27,7 @@ spring:
 
 
 mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.activityplatform.pojo
   configuration:
     map-underscore-to-camel-case: true
@@ -34,6 +35,6 @@ mybatis:
 my:
   config:
     exclude-uri:
-      - /activityplatform/login
-      - /activityplatform/getCode
+      - /activityplatform/getCodeForReg
+      - /activityplatform/getCodeForLogin
       - /activityplatform/register

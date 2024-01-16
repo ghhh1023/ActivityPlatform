@@ -5,7 +5,7 @@ import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 
 public interface UserService {
-    public Boolean login(String userName, String password);
+    public Boolean login(String username, String password);
 
     public Boolean logout();
 
@@ -15,7 +15,13 @@ public interface UserService {
 
     public UserInfo getUserInfo(Integer id);
 
-    User getUserByUserId(Integer id);
+    public User getUserByUserId(Integer id);
+
+    public Boolean getCodeForReg(String username);
+
+    public Boolean getCodeForLogin(String username);
+
+    public User getUserByUserName(String userName);
 
 
 }

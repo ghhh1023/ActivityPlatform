@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class JwtUtils {
+public class JwtUtil {
 
-    private Logger logger= LoggerFactory.getLogger(JwtUtils.class);
+    private Logger logger= LoggerFactory.getLogger(JwtUtil.class);
 
     //token秘钥,不能泄露
     private static final String SECRET="gh13574522165";
@@ -59,7 +59,7 @@ public class JwtUtils {
     }
 
     public static Integer getId(String token){
-        Map<String,Claim> map=JwtUtils.VerifyToken(token);
+        Map<String,Claim> map=JwtUtil.VerifyToken(token);
         return Integer.valueOf(map.get("id").asString());
     }
 //    //判断用户是是否有效

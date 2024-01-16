@@ -1,7 +1,7 @@
 package com.activityplatform.common;
 
 import com.activityplatform.service.RedisService;
-import com.activityplatform.util.JwtUtils;
+import com.activityplatform.util.JwtUtil;
 import com.activityplatform.util.SpringUtil;
 import com.auth0.jwt.interfaces.Claim;
 
@@ -38,7 +38,7 @@ public class RedisSession {
 
 
     public static RedisSession getInstance(String token){
-        Map<String, Claim> map= JwtUtils.VerifyToken(token);
+        Map<String, Claim> map= JwtUtil.VerifyToken(token);
         if (map==null){
             return null;
         }else{

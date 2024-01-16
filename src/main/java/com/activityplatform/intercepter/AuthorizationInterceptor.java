@@ -1,11 +1,11 @@
-package com.intercepter;
+package com.activityplatform.intercepter;
 
 import com.activityplatform.common.RedisSession;
 import com.activityplatform.common.RetJson;
 import com.activityplatform.pojo.ExcludeURI;
 import com.activityplatform.service.RedisService;
 import com.activityplatform.service.UserService;
-import com.activityplatform.util.JwtUtils;
+import com.activityplatform.util.JwtUtil;
 import com.auth0.jwt.interfaces.Claim;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +50,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if (token!=null){
 
             //解密token
-            Map<String, Claim> map= JwtUtils.VerifyToken(token);
+            Map<String, Claim> map= JwtUtil.VerifyToken(token);
             if (map==null){
                 writeErrorInfo(response);
                 return false;
@@ -86,7 +86,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     private void writeErrorInfo(HttpServletResponse response){
         try {
             Writer writer=response.getWriter();
-            writer.write(RetJson.fail(-2,"token已过期,请重新登录").toString());
+            writer.write(RetJson.fail(-2,"Token has expired, please log in again").toString());
             writer.flush();
         }catch (Exception e){
 
