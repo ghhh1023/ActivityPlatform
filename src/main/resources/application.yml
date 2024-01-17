@@ -38,3 +38,5 @@ my:
       - /activityplatform/getCodeForReg
       - /activityplatform/getCodeForLogin
       - /activityplatform/register
+      - /activityplatform/loginByPassword
+      - /activityplatform/loginByCode

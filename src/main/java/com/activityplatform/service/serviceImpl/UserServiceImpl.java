@@ -1,6 +1,7 @@
 package com.activityplatform.service.serviceImpl;
 
 
+import com.activityplatform.common.RetJson;
 import com.activityplatform.config.Client;
 import com.activityplatform.mapper.UserInfoMapper;
 import com.activityplatform.mapper.UserMapper;
@@ -9,6 +10,7 @@ import com.activityplatform.pojo.UserInfo;
 import com.activityplatform.service.RedisService;
 import com.activityplatform.service.UserService;
 import com.activityplatform.util.CodeUtil;
+import com.activityplatform.util.JwtUtil;
 import com.activityplatform.util.MobileMessageUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -17,7 +19,12 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 
 @Service
@@ -53,15 +60,14 @@ public class UserServiceImpl implements UserService {
         Client client=new Client();
         request= MobileMessageUtil.sendIdentifyingCode(username, verificationCode, 7);
         //在redis中存入用户的账号和对应的验证码
-        redisService.set(username,verificationCode,60 * 5);
+        redisService.set("login" + username,verificationCode,60 * 5);
         return true;
     }
 
     @Override
-    public Boolean login(String userName, String password) {
-
+    public Boolean login(User user) {
         Subject currentUser = SecurityUtils.getSubject();
-        UsernamePasswordToken token=new UsernamePasswordToken(userName,password);
+        UsernamePasswordToken token=new UsernamePasswordToken(user.getUsername(),user.getPassword());
         try {
             currentUser.login(token);//登入验证
         }catch(Exception e){
@@ -70,6 +76,7 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
 
     @Override
     public Boolean logout(){

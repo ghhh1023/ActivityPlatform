@@ -1,11 +1,14 @@
 package com.activityplatform.service;
 
 
+import com.activityplatform.common.RetJson;
 import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
-    public Boolean login(String username, String password);
+    public Boolean login(User user);
 
     public Boolean logout();
 
