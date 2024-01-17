@@ -2,6 +2,7 @@ package com.activityplatform.controller;
 
 import com.activityplatform.common.RetJson;
 import com.activityplatform.pojo.User;
+import com.activityplatform.pojo.UserInfo;
 import com.activityplatform.service.RedisService;
 import com.activityplatform.service.UserService;
 import com.activityplatform.util.JwtUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -167,6 +169,38 @@ public class UserController {
             }
         }
         return RetJson.fail(-1,"登录失败,请检查用户名或验证码");
+    }
+
+    /**
+     * 修改用户信息
+     * @param userInfo 用户信息，字段为：
+     * @param request
+     * @return
+     */
+    @RequestMapping("/alterUserInfo")
+    public RetJson alterUserInfo(@RequestBody UserInfo userInfo, HttpServletRequest request){
+        if (!ValidatedUtil.validate(userInfo)){
+            return RetJson.fail(-1,"请检查参数");
+        }
+        Integer id = ((User)request.getAttribute("user")).getId();
+        userInfo.setId(id);
+        UserInfo pastUserInfo = userService.getUserInfo(id);
+        copyFieldValue(userInfo,pastUserInfo);
+        userService.alterUserInfo(userInfo);
+        return RetJson.success(0,"修改成功");
+    }
+
+    private   void copyFieldValue(UserInfo userInfo,UserInfo pastUserInfo){
+        for(Field f : userInfo.getClass().getDeclaredFields()){
+            f.setAccessible(true);
+            try {
+                if(f.get(userInfo) == null&&f.get(pastUserInfo) != null){
+                    f.set(userInfo,f.get(pastUserInfo));
+                }
+            }catch (IllegalAccessException e){
+                e.printStackTrace();
+            }
+        }
     }
 
 

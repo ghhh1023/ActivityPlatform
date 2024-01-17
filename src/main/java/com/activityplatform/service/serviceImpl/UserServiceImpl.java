@@ -103,13 +103,26 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * 修改
+     * 修改 姓名 性别 年龄 email
      * @param userInfo
      * @return
      */
     @Override
     public boolean alterUserInfo(UserInfo userInfo) {
-
+        UserInfo d=userInfoMapper.getUserInfoById(userInfo.getId());
+        if (userInfo.getName()==null){
+            userInfo.setName(d.getName());
+        }
+        if (userInfo.getAge()==null){
+            userInfo.setAge(d.getAge());
+        }
+        if (userInfo.getSex()==null){
+            userInfo.setSex(d.getSex());
+        }
+        if (userInfo.getEmail()==null){
+            userInfo.setEmail(d.getEmail());
+        }
+        userInfoMapper.alterUserInfo(userInfo);
         return true;
     }
 

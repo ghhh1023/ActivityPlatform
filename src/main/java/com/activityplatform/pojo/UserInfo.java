@@ -14,16 +14,15 @@ import javax.validation.constraints.Email;
 public class UserInfo {
     private  Integer id;
 
-    private Integer uid;
 
     @Length(max = 11,min = 11,message = "手机号长度必须是11位")
     private String phoneNum;
 
     private String name;
 
-    private int age;
+    private Integer age;
 
-    private int sex;
+    private Integer sex;
 
     @Email
     private String email;
