@@ -7,6 +7,7 @@ import com.activityplatform.service.UserService;
 import com.activityplatform.util.JwtUtil;
 import com.activityplatform.util.ValidatedUtil;
 import com.activityplatform.vo.CodeUser;
+import org.apache.shiro.SecurityUtils;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -109,7 +110,8 @@ public class UserController {
                 //生成一个随机的不重复的uuid
                 UUID uuid=UUID.randomUUID();
                 request.setAttribute("uuid",uuid.toString());
-                String token= JwtUtil.createToken(uuid,user.getId().toString());
+                Boolean isAdmin = SecurityUtils.getSubject().hasRole("admin");
+                String token= JwtUtil.createToken(uuid,user.getId().toString(),isAdmin);
                 //将uuid和user以键值对的形式存放在redis中
                 user.setPassword(null);
                 user.setSalt(null);
@@ -146,7 +148,8 @@ public class UserController {
                     //生成一个随机的不重复的uuid
                     UUID uuid=UUID.randomUUID();
                     request.setAttribute("uuid",uuid.toString());
-                    String token= JwtUtil.createToken(uuid,user.getId().toString());
+                    Boolean isAdmin = SecurityUtils.getSubject().hasRole("admin");
+                    String token= JwtUtil.createToken(uuid,user.getId().toString(),isAdmin);
                     //将uuid和user以键值对的形式存放在redis中
                     user.setPassword(null);
                     user.setSalt(null);

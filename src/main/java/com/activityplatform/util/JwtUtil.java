@@ -23,7 +23,7 @@ public class JwtUtil {
     public static  final int calendarInterval=7;//过期时间,一周
 
     //生成token
-    public static String createToken(UUID uuid,String id) throws Exception{
+    public static String createToken(UUID uuid,String id,Boolean isAdmin) throws Exception{
         Date iatDate=new Date();
         Calendar nowTime=Calendar.getInstance();
         nowTime.add(calendarField,calendarInterval);
@@ -37,6 +37,7 @@ public class JwtUtil {
         String token= JWT.create().withHeader(map).withClaim("iss","Service")
                 .withClaim("aud","APP").withClaim("uuid",uuid.toString())
                 .withClaim("id",id)
+                .withClaim("isAdmin",isAdmin.toString())
                 .withIssuedAt(iatDate)
                 .withExpiresAt(expiresDate)
                 .sign(Algorithm.HMAC256(SECRET));

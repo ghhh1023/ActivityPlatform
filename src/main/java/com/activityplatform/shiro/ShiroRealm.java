@@ -1,6 +1,8 @@
 package com.activityplatform.shiro;
 
 
+import com.activityplatform.pojo.AdminUser;
+import com.activityplatform.pojo.ExcludeURI;
 import com.activityplatform.pojo.User;
 import com.activityplatform.service.UserService;
 import org.apache.shiro.authc.*;
@@ -12,12 +14,16 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     UserService userService;
+
+    @Autowired
+    AdminUser adminUser;
 
     //登入验证逻辑
     @Override
@@ -42,10 +48,18 @@ public class ShiroRealm extends AuthorizingRealm {
         Object principal=principalCollection.getPrimaryPrincipal();
         Set<String> roles=new HashSet<>();
         roles.add("user");
-        if ("admin".equals(principal)){
+        if (isAdmin(principal.toString())){
             roles.add("admin");
         }
         SimpleAuthorizationInfo info=new SimpleAuthorizationInfo(roles);
         return info;
+    }
+
+    public boolean isAdmin(String username){
+        List<String> list=adminUser.getAdminUser();
+        if (list.contains(username)){
+            return true;
+        }
+        return false;
     }
 }

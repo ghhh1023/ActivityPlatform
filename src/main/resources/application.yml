@@ -40,3 +40,8 @@ my:
       - /activityplatform/register
       - /activityplatform/loginByPassword
       - /activityplatform/loginByCode
+
+admin:
+  list:
+    admin-user:
+      - 13574522165

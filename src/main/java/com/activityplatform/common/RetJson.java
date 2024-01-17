@@ -42,6 +42,13 @@ public class RetJson {
         return retJson;
     }
 
+    public static RetJson success(Map map){
+        RetJson retJson=new RetJson();
+        retJson.setCode(0);
+        retJson.setData(map);
+        return retJson;
+    }
+
 
 
     public static RetJson success(int code,String msg){

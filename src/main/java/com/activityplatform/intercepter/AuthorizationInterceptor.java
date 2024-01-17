@@ -57,12 +57,14 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
             }
             String uuid=map.get("uuid").asString();
             String id=map.get("id").asString();
+            String isAdmin = map.get("isAdmin").asString();
             //判断token是否有效
             if (uuid!=null&&id!=null&&redisService.exists("user:"+id)){
                 System.out.println("user:"+userService.getUserByUserId(Integer.valueOf(id)));
                 System.out.println("id:"+userService.getUserInfo(Integer.valueOf(id)));
                 request.setAttribute("user",userService.getUserByUserId(Integer.valueOf(id)));
                 request.setAttribute("userInfo",userService.getUserInfo(Integer.valueOf(id)));
+                request.setAttribute("isAdmin",isAdmin);
                 request.setAttribute("id",Integer.valueOf(id));
                 String ret=(String) redisService.get("user:"+id);
                 if (ret.equals(uuid)||true){
