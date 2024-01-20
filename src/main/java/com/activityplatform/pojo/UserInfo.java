@@ -26,4 +26,6 @@ public class UserInfo {
 
     @Email
     private String email;
+
+    private String career;
 }
