@@ -16,7 +16,9 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,25 +34,38 @@ public class FileInfoController {
      * 上传文件
      */
     @PostMapping("/upload")
-    public RetJson upload(MultipartFile file) throws IOException {
-        String originalName = file.getOriginalFilename();
-        if(originalName==null){
-            return RetJson.fail(-1,"文件名不能为空");
+    public RetJson upload(@RequestParam("files") MultipartFile[] files) {
+        List<FileInfo> uploadedFiles = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String originalName = file.getOriginalFilename();
+            if (originalName == null || originalName.isEmpty()) {
+                return RetJson.fail(-1, "文件名不能为空");
+            }
+            String fileName = FileUtil.mainName(originalName) + System.currentTimeMillis() + "." + FileUtil.extName(originalName);
+            try {
+                FileUtil.writeBytes(file.getBytes(), BASE_PATH + fileName);
+
+                FileInfo info = new FileInfo();
+                info.setOriginName(originalName);
+                info.setFileName(fileName);
+                FileInfo addInfo = FileInfoService.add(info);
+
+                if (addInfo != null) {
+                    uploadedFiles.add(addInfo);
+                } else {
+                    return RetJson.fail(-3, "上传失败");
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // 或者记录错误日志
+                return RetJson.fail(-3, "上传失败");
+            }
         }
-        if(originalName.contains("png")&&originalName.contains("jpg")&&originalName.contains("jpeg")&&originalName.contains("gif")){
-            return RetJson.fail(-2,"只能上传图片");
-        }
-        String fileName = FileUtil.mainName(originalName)+System.currentTimeMillis()+"."+FileUtil.extName(originalName);
-        FileUtil.writeBytes(file.getBytes(),BASE_PATH+fileName);
-        FileInfo info = new FileInfo();
-        info.setOriginName(originalName);
-        info.setFileName(fileName);
-        FileInfo addInfo = FileInfoService.add(info);
-        if(addInfo!=null){
-            return RetJson.success(0,"上传成功");
-        }
-        return RetJson.fail(-3,"上传失败");
+
+        Map<String, List<FileInfo>> resMap = new HashMap<>();
+        resMap.put("fileInfoList", uploadedFiles);
+        return RetJson.success(resMap, "上传成功");
     }
+
 
     /**
      * update

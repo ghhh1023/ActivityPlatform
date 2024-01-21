@@ -17,7 +17,7 @@ public class FileInfoServiceImpl implements FileInfoService {
      */
 
     public FileInfo add(FileInfo FileInfo){
-        FileInfoMapper.insertSelective(FileInfo);
+        FileInfoMapper.insertFile(FileInfo);
         return FileInfo;
     }
 
@@ -32,11 +32,10 @@ public class FileInfoServiceImpl implements FileInfoService {
      * delete
      */
     public void delete(Long id){
-        System.out.println(id);
         FileInfoMapper.deleteByPrimaryKey(id);
     }
 
     public FileInfo findById(Long id){
-        return FileInfoMapper.selectByPrimaryKey(id);
+        return FileInfoMapper.getFileInfoById(id);
     }
 }
