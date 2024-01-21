@@ -3,6 +3,7 @@ package com.activityplatform.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RetJson {
@@ -40,6 +41,12 @@ public class RetJson {
         retJson.setMsg(msg);
         retJson.setData(map);
         return retJson;
+    }
+
+    public static RetJson success(String key,Object value,String msg){
+        Map<String,Object> map=new HashMap<>();
+        map.put(key,value);
+        return success(map,msg);
     }
 
     public static RetJson success(Map map){

@@ -38,6 +38,7 @@ public class ShowActivity {
         this.location = activity.getLocation();
         this.content = activity.getContent();
         this.promoterId = activity.getPromoterId();
+        this.promoterName = activity.getPromoterName();
         this.promoterCareer = activity.getPromoterCareer();
         this.isExamine = activity.getIsExamine();
     }

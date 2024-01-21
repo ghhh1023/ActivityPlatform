@@ -6,6 +6,8 @@ import com.activityplatform.pojo.Activity;
 import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 import com.activityplatform.service.ActivityService;
+import com.activityplatform.util.CopyObjectUtil;
+import com.activityplatform.util.ValidatedUtil;
 import com.activityplatform.vo.ShowActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,5 +59,43 @@ public class ActivityController {
         activityService.add(activity);
         return RetJson.success(0, "添加成功");
     }
+
+
+
+    @DeleteMapping("/delete/{id}")
+    public RetJson delete(@PathVariable int id, HttpServletRequest request){
+        String isAdmin = request.getAttribute("isAdmin").toString();
+        if ("false".equals(isAdmin)){
+            return RetJson.fail(-9,"权限不足，请联系管理员");
+        }
+        activityService.delete(id);
+        return RetJson.success(0, "删除成功");
+    }
+
+
+    /**
+     * 修改活动信息
+     * @param activity 用户信息，字段为：
+     * @param request
+     * @return
+     */
+    @RequestMapping("/update")
+    public RetJson alterActivity(@RequestBody Activity activity, HttpServletRequest request){
+        if (!ValidatedUtil.validate(activity)){
+            return RetJson.fail(-1,"请检查参数");
+        }
+        String isAdmin = request.getAttribute("isAdmin").toString();
+        if ("false".equals(isAdmin)){
+            return RetJson.fail(-9,"权限不足，请联系管理员");
+        }
+        Activity pastActivity = activityService.getActivityById(activity.getId());
+        if (pastActivity == null){
+            return RetJson.fail(-2,"活动不存在");
+        }
+        CopyObjectUtil.copyFieldValue(activity,pastActivity);
+        activityService.alter(activity);
+        return RetJson.success(0,"修改成功");
+    }
+
 
 }

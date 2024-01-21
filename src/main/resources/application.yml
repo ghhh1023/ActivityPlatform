@@ -25,6 +25,10 @@ spring:
   application:
     name: io
 
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
@@ -45,3 +49,5 @@ admin:
   list:
     admin-user:
       - 13574522165
+
+

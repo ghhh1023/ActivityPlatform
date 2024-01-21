@@ -5,6 +5,7 @@ import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 import com.activityplatform.service.RedisService;
 import com.activityplatform.service.UserService;
+import com.activityplatform.util.CopyObjectUtil;
 import com.activityplatform.util.JwtUtil;
 import com.activityplatform.util.ValidatedUtil;
 import com.activityplatform.vo.CodeUser;
@@ -172,6 +173,22 @@ public class UserController {
     }
 
     /**
+     * 获取用户信息
+     * @param
+     * @return
+     */
+    @RequestMapping("/getUserInfo")
+    public RetJson getUserInfo(HttpServletRequest request){
+        Integer id = ((User)request.getAttribute("user")).getId();
+        UserInfo userInfo=userService.getUserInfo(id);
+        if (userInfo==null){
+            return RetJson.fail(-1,"获取用户信息失败");
+        }else{
+            return RetJson.success("userInfo",userInfo,"获取成功");
+        }
+    }
+
+    /**
      * 修改用户信息
      * @param userInfo 用户信息，字段为：
      * @param request
@@ -185,23 +202,11 @@ public class UserController {
         Integer id = ((User)request.getAttribute("user")).getId();
         userInfo.setId(id);
         UserInfo pastUserInfo = userService.getUserInfo(id);
-        copyFieldValue(userInfo,pastUserInfo);
+        CopyObjectUtil.copyFieldValue(userInfo,pastUserInfo);
         userService.alterUserInfo(userInfo);
         return RetJson.success(0,"修改成功");
     }
 
-    private   void copyFieldValue(UserInfo userInfo,UserInfo pastUserInfo){
-        for(Field f : userInfo.getClass().getDeclaredFields()){
-            f.setAccessible(true);
-            try {
-                if(f.get(userInfo) == null&&f.get(pastUserInfo) != null){
-                    f.set(userInfo,f.get(pastUserInfo));
-                }
-            }catch (IllegalAccessException e){
-                e.printStackTrace();
-            }
-        }
-    }
 
 
 

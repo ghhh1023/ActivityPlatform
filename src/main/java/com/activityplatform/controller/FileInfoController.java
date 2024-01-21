@@ -90,9 +90,7 @@ public class FileInfoController {
      */
     @GetMapping("/detail/{id}")
     public RetJson detail(@PathVariable Long id){
-        Map map = new HashMap<String, FileInfo>();
-        map.put("fileInfo", FileInfoService.findById(id));
-        return RetJson.success(map);
+        return RetJson.success("fileInfo", FileInfoService.findById(id),"获取成功");
     }
 
     /**

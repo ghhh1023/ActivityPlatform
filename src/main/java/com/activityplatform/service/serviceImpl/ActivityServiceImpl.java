@@ -33,9 +33,25 @@ public class ActivityServiceImpl implements ActivityService {
         return activity;
     }
 
+    public Activity getActivityById(Integer id){
+        return activityMapper.getActivityById(id);
+    }
+
     @Override
     public Boolean isSubscribe(Integer uId, Integer aId) {
         return subscribeMapper.getSubscriptionCount(uId, aId) > 0;
+    }
+
+    @Override
+    public Boolean delete(Integer id) {
+        return activityMapper.deleteById(id);
+    }
+
+    @Override
+    public Boolean alter(Activity activity) {
+        convertFileListToFields(activity);
+        activityMapper.alterActivity(activity);
+        return true;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.activityplatform.service;
 
 import com.activityplatform.pojo.Activity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,4 +12,10 @@ public interface ActivityService {
     public Activity add(Activity activity);
 
     public Boolean isSubscribe(Integer uId, Integer aId);
+
+    public Boolean delete(Integer id);
+
+    public Boolean alter(Activity activity);
+
+    public Activity getActivityById(Integer id);
 }
