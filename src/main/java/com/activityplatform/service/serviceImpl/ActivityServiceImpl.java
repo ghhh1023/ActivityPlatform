@@ -8,6 +8,7 @@ import com.activityplatform.pojo.ActivityDetail;
 import com.activityplatform.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Boolean isSubscribe(Integer uId, Integer aId) {
-        return subscribeMapper.getSubscriptionCount(uId, aId) > 0;
+        return subscribeMapper.isSubscribe(uId, aId) > 0;
     }
 
     @Override
@@ -69,6 +70,53 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public ActivityDetail getActivityDetailByAId(Integer aId) {
-        return activityMapper.getActivityDetailByAId(aId);
+        ActivityDetail activityDetail = activityMapper.getActivityDetailByAId(aId);
+        activityDetail.setSubscribersCount(subscribeMapper.getSubscriptionCountByAid(aId));
+        return activityDetail;
+    }
+
+    @Override
+    @Transactional
+    public Boolean subscribe(Integer uId, Integer aId) {
+        try {
+            ActivityDetail activityDetail = activityMapper.getActivityDetailByAId(aId);
+            activityDetail.setSubscribersCount(activityDetail.getSubscribersCount() + 1);
+            activityMapper.alterActivityDetail(activityDetail);
+
+            int rowsAffected = subscribeMapper.subscribe(uId, aId);
+
+            if (rowsAffected > 0) {
+                // 如果上述操作都成功，提交事务
+                return true;
+            } else {
+                // 如果插入操作没有成功，抛出异常，触发事务回滚
+                throw new RuntimeException("Failed to subscribe. Rolling back transaction.");
+            }
+        } catch (Exception e) {
+            // 处理异常，触发事务回滚
+            throw new RuntimeException("Error while subscribing. Rolling back transaction.", e);
+        }
+    }
+
+    @Override
+    public Boolean unsubscribe(Integer uId, Integer aId) {
+        try {
+            ActivityDetail activityDetail = activityMapper.getActivityDetailByAId(aId);
+            activityDetail.setSubscribersCount(activityDetail.getSubscribersCount() - 1);
+            activityMapper.alterActivityDetail(activityDetail);
+
+            int rowsAffected = subscribeMapper.unsubscribe(uId, aId);
+
+            if (rowsAffected > 0) {
+                // 如果上述操作都成功，提交事务
+                return true;
+            } else {
+                // 如果插入操作没有成功，抛出异常，触发事务回滚
+                throw new RuntimeException("Failed to subscribe. Rolling back transaction.");
+            }
+        } catch (Exception e) {
+            // 处理异常，触发事务回滚
+            throw new RuntimeException("Error while subscribing. Rolling back transaction.", e);
+        }
     }
 }

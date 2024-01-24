@@ -21,4 +21,8 @@ public interface ActivityService {
     public Activity getActivityById(Integer id);
 
     public ActivityDetail getActivityDetailByAId(Integer aId);
+
+    public Boolean subscribe(Integer uId, Integer aId);
+
+    public Boolean unsubscribe(Integer uId, Integer aId);
 }

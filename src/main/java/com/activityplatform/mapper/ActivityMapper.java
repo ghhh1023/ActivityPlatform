@@ -32,4 +32,7 @@ public interface ActivityMapper extends Mapper<Activity>{
 
     @Select("select id,a_id,v_id,l_id,viewers_count,likes_count,subscribers_count,signup_fee from activity_detail where a_id=#{aId}")
     public ActivityDetail getActivityDetailByAId(@Param("aId") Integer aId);
+
+    @Update({"update activity_detail set v_id=#{vId},l_id=#{lId},viewers_count=#{viewersCount},likes_count=#{likesCount},subscribers_count=#{subscribersCount},signup_fee=#{signupFee} where a_id=#{aId}"})
+    public void alterActivityDetail(ActivityDetail activityDetail);
 }

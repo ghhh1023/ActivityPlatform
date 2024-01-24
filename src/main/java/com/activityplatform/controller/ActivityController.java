@@ -115,4 +115,42 @@ public class ActivityController {
         }
     }
 
+    /**
+     * 订阅
+     * @param aId
+     * @return
+     */
+    @RequestMapping("/subscribe/{aId}")
+    public RetJson subscribe(@PathVariable Integer aId){
+        Activity pastActivity = activityService.getActivityById(aId);
+        Integer uId = user.getId();
+        if (pastActivity == null){
+            return RetJson.fail(-2,"活动不存在");
+        }
+        if (activityService.isSubscribe(uId, aId)){
+            return RetJson.fail(-1,"已订阅，不可重复订阅");
+        }
+        activityService.subscribe(uId, aId);
+        return RetJson.success(0,"订阅成功");
+    }
+
+    /**
+     * 取消订阅
+     * @param aId
+     * @return
+     */
+    @RequestMapping("/unsubscribe/{aId}")
+    public RetJson unsubscribe(@PathVariable Integer aId){
+        Activity pastActivity = activityService.getActivityById(aId);
+        Integer uId = user.getId();
+        if (pastActivity == null){
+            return RetJson.fail(-2,"活动不存在");
+        }
+        if (!activityService.isSubscribe(uId, aId)){
+            return RetJson.fail(-1,"还未订阅");
+        }
+        activityService.unsubscribe(uId, aId);
+        return RetJson.success(0,"取消订阅成功");
+    }
+
 }
