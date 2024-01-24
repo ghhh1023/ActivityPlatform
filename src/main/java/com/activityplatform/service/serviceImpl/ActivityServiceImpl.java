@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.activityplatform.mapper.ActivityMapper;
 import com.activityplatform.mapper.SubscribeMapper;
 import com.activityplatform.pojo.Activity;
+import com.activityplatform.pojo.ActivityDetail;
 import com.activityplatform.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class ActivityServiceImpl implements ActivityService {
         return true;
     }
 
+
     /**
      * 页面传来的上传文件列表转换成以逗号隔开的id列表
      * @param activity
@@ -63,5 +65,10 @@ public class ActivityServiceImpl implements ActivityService {
         if(!CollectionUtil.isEmpty(fileList)){
             activity.setImgIds(fileList.toString());
         }
+    }
+
+    @Override
+    public ActivityDetail getActivityDetailByAId(Integer aId) {
+        return activityMapper.getActivityDetailByAId(aId);
     }
 }

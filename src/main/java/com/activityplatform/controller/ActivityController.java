@@ -3,12 +3,14 @@ package com.activityplatform.controller;
 
 import com.activityplatform.common.RetJson;
 import com.activityplatform.pojo.Activity;
+import com.activityplatform.pojo.ActivityDetail;
 import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 import com.activityplatform.service.ActivityService;
 import com.activityplatform.util.CopyObjectUtil;
 import com.activityplatform.util.ValidatedUtil;
 import com.activityplatform.vo.ShowActivity;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,5 +99,20 @@ public class ActivityController {
         return RetJson.success(0,"修改成功");
     }
 
+
+    /**
+     * 获取活动详情
+     * @param aId
+     * @return
+     */
+    @RequestMapping("/getActivityDetail/{aId}")
+    public RetJson getUserInfo(@PathVariable Integer aId){
+        ActivityDetail activityDetail = activityService.getActivityDetailByAId(aId);
+        if (activityDetail==null){
+            return RetJson.fail(-1,"获取活动详情失败");
+        }else{
+            return RetJson.success("activityDetail",activityDetail,"获取成功");
+        }
+    }
 
 }

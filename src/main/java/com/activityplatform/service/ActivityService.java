@@ -1,6 +1,7 @@
 package com.activityplatform.service;
 
 import com.activityplatform.pojo.Activity;
+import com.activityplatform.pojo.ActivityDetail;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ActivityService {
     public Boolean alter(Activity activity);
 
     public Activity getActivityById(Integer id);
+
+    public ActivityDetail getActivityDetailByAId(Integer aId);
 }
