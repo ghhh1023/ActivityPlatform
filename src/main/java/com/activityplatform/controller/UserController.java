@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -207,6 +208,23 @@ public class UserController {
         return RetJson.success(0,"修改成功");
     }
 
+
+
+    /**
+     * 获取订阅信息
+     * @param
+     * @return
+     */
+    @RequestMapping("/getSubscriptions")
+    public RetJson getSubscription(HttpServletRequest request){
+        Integer id = ((User)request.getAttribute("user")).getId();
+        List<Integer> subscriptions = userService.getAllSubscription(id);
+        if (subscriptions==null){
+            return RetJson.fail(-1,"获取用户信息失败");
+        }else{
+            return RetJson.success("Subscriptions",subscriptions,"获取成功");
+        }
+    }
 
 
 

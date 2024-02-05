@@ -6,6 +6,7 @@ import com.activityplatform.pojo.User;
 import com.activityplatform.pojo.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface UserService {
     public Boolean login(User user);
@@ -25,6 +26,8 @@ public interface UserService {
     public Boolean getCodeForLogin(String username);
 
     public User getUserByUserName(String userName);
+
+    public List<Integer> getAllSubscription(Integer uId);
 
 
 }

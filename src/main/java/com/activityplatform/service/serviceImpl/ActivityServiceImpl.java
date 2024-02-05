@@ -71,7 +71,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public ActivityDetail getActivityDetailByAId(Integer aId) {
         ActivityDetail activityDetail = activityMapper.getActivityDetailByAId(aId);
-        activityDetail.setSubscribersCount(subscribeMapper.getSubscriptionCountByAid(aId));
+        activityDetail.setSubscribersCount(subscribeMapper.getSubscriptionCountByAId(aId));
         return activityDetail;
     }
 

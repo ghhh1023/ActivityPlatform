@@ -3,6 +3,7 @@ package com.activityplatform.service.serviceImpl;
 
 import com.activityplatform.common.RetJson;
 import com.activityplatform.config.Client;
+import com.activityplatform.mapper.SubscribeMapper;
 import com.activityplatform.mapper.UserInfoMapper;
 import com.activityplatform.mapper.UserMapper;
 import com.activityplatform.pojo.User;
@@ -21,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -40,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private UserInfoMapper userInfoMapper;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private SubscribeMapper subscribeMapper;
 
 
     @Override
@@ -142,7 +142,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserByUserName(userName);
     }
 
-
+    @Override
+    public List<Integer> getAllSubscription(Integer uId) {
+        return subscribeMapper.getSubscriptionByUId(uId);
+    }
 
     public String produceSalt()
     {
