@@ -81,7 +81,7 @@ public class ActivityController {
      * @param request
      * @return
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public RetJson alterActivity(@RequestBody Activity activity, HttpServletRequest request){
         if (!ValidatedUtil.validate(activity)){
             return RetJson.fail(-1,"请检查参数");

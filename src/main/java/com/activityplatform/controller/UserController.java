@@ -13,10 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -195,7 +192,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping("/alterUserInfo")
+    @PutMapping("/alterUserInfo")
     public RetJson alterUserInfo(@RequestBody UserInfo userInfo, HttpServletRequest request){
         if (!ValidatedUtil.validate(userInfo)){
             return RetJson.fail(-1,"请检查参数");

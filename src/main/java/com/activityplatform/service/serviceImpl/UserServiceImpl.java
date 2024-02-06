@@ -122,6 +122,9 @@ public class UserServiceImpl implements UserService {
         if (userInfo.getEmail()==null){
             userInfo.setEmail(d.getEmail());
         }
+        if (userInfo.getCareer()==null){
+            userInfo.setCareer(d.getCareer());
+        }
         userInfoMapper.alterUserInfo(userInfo);
         return true;
     }
